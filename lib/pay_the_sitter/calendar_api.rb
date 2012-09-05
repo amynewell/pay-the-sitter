@@ -3,11 +3,12 @@ require './commandline_oauth'
 require 'json'
 require 'american_date'
 # Create a new API client & load the Google+ API 
-class CalendarApi
+module PayTheSitter
+ class CalendarApi
 	def initialize
 		@client = Google::APIClient.new
 		@calendar = @client.discovered_api('calendar', 'v3')
-		auth_util = CommandLineOAuthHelper.new('https://www.googleapis.com/auth/calendar.readonly')
+		auth_util = PayTheSitter::CommandLineOAuthHelper.new('https://www.googleapis.com/auth/calendar.readonly')
 		@client.authorization = auth_util.authorize()
 	end
 
@@ -31,9 +32,7 @@ class CalendarApi
 		return JSON.parse(results.response.body)["items"]
 	end
 
-	def total_hours_for(cal, min_date, max_date= Time.now)
-		min_date=Time.parse(min_date) #no, this is not right.
-		max_date = Time.parse(max_date) #also not right.
+	def total_hours_for(cal, min_date, max_date)
 		items = scoped_to_single_cal_get_all_events_between(cal, min_date, max_date)
 		# don't stay out past midnight, yo
 		return 0 unless items && items.any?
@@ -53,6 +52,6 @@ class CalendarApi
 	def to_google_string_from_datetime(datetime)
 		datetime.strftime("%Y-%m-%dT%H:%M:%S.000%z")
 	end
+  end
 end
-
 
