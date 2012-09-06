@@ -21,7 +21,28 @@ module PayTheSitter
       calendar_api = PayTheSitter::CalendarApi.new
 
       hours = calendar_api.total_hours_for(@params[:calendar], start_date, end_date)
-      #hours += @params[:extra_time].collect 
+      puts "\n\n\n#{hours} hours of babysitter time were recorded in the calendar."
+      
+      extra_time = 0
+      if @params[:extra_time]
+        extra_time = @params[:extra_time].collect {|t|t.to_i}.inject(extra_time) {|sum, item| sum+=item}
+      end
+      extra_time = extra_time/60 # convert to hours
+      puts "#{extra_time} hours of extra time will be included in the rate calculations."
+
+      total_time = hours + extra_time
+      puts "Total time: #{total_time}"
+      hourly_payment = (total_time * @params[:rate].to_i).ceil
+      puts "Total hourly payment due: #{hourly_payment}  "
+      
+      extra_money = 0.0
+      if @params[:extra_money]
+        extra_money = @params[:extra_money].collect {|t|t.to_f}.inject(extra_money) {|sum, item| sum+=item}
+      end
+      puts "Extra money #{extra_money}"
+      puts "TOTAL DUE: $#{(hourly_payment + extra_money).ceil}"
+
+      exit 0
     end
 
     def parse_options(argv)
