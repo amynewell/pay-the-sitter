@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/pay_the_sitter"
+
+begin
+  PayTheSitter::Application.new(ARGV).run
+rescue Errno::ENOENT => err
+  abort "paythesitter: #{err.message}"
+rescue OptionParser::InvalidOption => err
+  abort "paythesitter: #{err.message}\nusage: paythesitter -c calendar -r rate -s start_date"
+end

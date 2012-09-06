@@ -1,5 +1,5 @@
 require 'google/api_client'
-require './commandline_oauth'
+#require './commandline_oauth'
 require 'json'
 require 'american_date'
 # Create a new API client & load the Google+ API 
