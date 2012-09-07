@@ -48,7 +48,7 @@ module PayTheSitter
     def parse_options(argv)
       params = {}
       parser = OptionParser.new do |opts|
-        opts.banner = "Usage: pay_the_sitter.rb [options]"
+        opts.banner = "Usage: pay_the_sitter.rb -c CALENDAR -s MM/DD/YYYY -r RATE [OPTIONS]"
         opts.separator ""
         opts.separator "Specific options:"
 
@@ -56,7 +56,7 @@ module PayTheSitter
           params[:extra_time] = extra_minutes
         end
 
-        opts.on("-m",  "--extra_money [4,3,4]", Array, "Extra money to add to total time") do |extra_money|
+        opts.on("-m",  "--extra_money [4,3,4]", Array, "Extra money to add to total cost") do |extra_money|
           params[:extra_money] = extra_money
         end
         # opts.on("-q",  "--query [QUERY]", "Text to search for in event titles") do |query|
@@ -68,10 +68,10 @@ module PayTheSitter
         opts.on("-r",  "--rate RATE", "pay rate") do |rate|
           params[:rate] = rate
         end
-        opts.on("-s",  "--start_date START", "start date is required") do |start|
+        opts.on("-s",  "--start_date MM/DD/YYYY", "start date is required") do |start|
           params[:start_date] = start
         end
-        opts.on("-e",  "--end_date [END_DATE]", "end date, defaults to today") do |end_date|
+        opts.on("-e",  "--end_date [MM/DD/YYYY]", "end date, defaults to today") do |end_date|
           params[:end_date] = end_date
         end
         opts.on_tail '-h', '--help', 'Print this help' do  
